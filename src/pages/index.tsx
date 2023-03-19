@@ -7,6 +7,7 @@ import AppShellDemo from '@/component/main'
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+  // const { user } = useUser({ redirectTo: '/login' })
   return (
     <>
       <Head>
