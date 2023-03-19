@@ -3,7 +3,9 @@ import { useState } from "react";
 import { useDisclosure, useShallowEffect } from "@mantine/hooks";
 import { IconSettings } from '@tabler/icons-react';
 
+const ls = []
 
+// tambahan contoh
 export default function AppShellDemo() {
     const theme = useMantineTheme();
     const [opened, setOpened] = useState(false);
