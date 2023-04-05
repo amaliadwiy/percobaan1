@@ -29,9 +29,9 @@ export default function App(props: AppProps) {
           colorScheme: "light",
         }}
       >
-        <AuthLogin>
+        {/* <AuthLogin> */}
         <Component {...pageProps} />
-        </AuthLogin>
+        {/* </AuthLogin> */}
       </MantineProvider>
     </>
   );

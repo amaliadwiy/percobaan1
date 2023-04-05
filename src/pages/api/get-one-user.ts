@@ -2,14 +2,21 @@ import { PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 
 const prisma = new PrismaClient();
-const getUser =async (req:NextApiRequest, res:NextApiResponse) => {
+const getOneUser =async (req:NextApiRequest, res:NextApiResponse) => {
+    const body = req.body
     const data = await prisma.user.findUnique({
         where:{
-            id:7,
+            id:2,
         },
+        select:{
+            id:true,
+            name:true,
+            email:true,
+            password:true,
+        }
     })
 
-    res.status(200).json(req.body)
+    return res.status(201).json(data);
 }
 
-export default getUser
+export default getOneUser

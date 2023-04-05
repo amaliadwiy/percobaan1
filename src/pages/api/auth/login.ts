@@ -1,7 +1,8 @@
-import { User } from "@prisma/client";
+import { Prisma, User } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 import { ironOptions } from "../../../../lib/config";
 import { PrismaClient } from "@prisma/client";
+import { isNotEmpty } from "@mantine/form";
 const prisma = new PrismaClient()
 
 // export default withIronSessionApiRoute(loginRoute, ironOptions);
@@ -18,11 +19,11 @@ const prisma = new PrismaClient()
 
 const login = async (req: NextApiRequest, res: NextApiResponse) => {
     const body = req.body
-    const data = await prisma.user.findFirst({
+    const data = await prisma.user.findFirstOrThrow({
         where: {
-            AND: {
+            AND:{
                 email: body.email,
-                password: body.password
+                password:body.password
             }
         },
         select: {
@@ -32,8 +33,10 @@ const login = async (req: NextApiRequest, res: NextApiResponse) => {
         }
     })
 
-    if(data) return res.status(201).json(data)
-    return res.status(204).end()
+    if(data)return res.status(201).json(data)
+    return res.status(204).end();
+    
+    
 }
 
 export default login

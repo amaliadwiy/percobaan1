@@ -23,7 +23,7 @@ import {
 import { useState } from "react";
 import { useDisclosure, useShallowEffect } from "@mantine/hooks";
 import { IconSettings } from "@tabler/icons-react";
-
+import { useForm } from "@mantine/form";
 
 export default function AppShellDemo() {
   const theme = useMantineTheme();
@@ -34,7 +34,7 @@ export default function AppShellDemo() {
   const [password, setPassword] = useState<string>("");
 
   const [listDataUser, setlistDatauser] = useState<any[]>([]);
-  const [listDataUserUpdate, setlistDatauserUpdate] = useState<any[]>([]);
+  const [listOneUser, setOneUser] = useState<any[]>([]);
 
   useShallowEffect(() => {
     loadUser();
@@ -44,18 +44,26 @@ export default function AppShellDemo() {
     const res = await fetch("/api/get-user");
     if (res.status == 200) {
       const data = await res.json();
-      // console.log(data);
-      setlistDatauser(data)
+      setlistDatauser(data);
     }
   };
 
-  const loadOneUser = (id: string) => {
-    fetch("/api/get-one-user?id=" + id)
-      .then((v) => v.json())
-      .then((v) => {
-        setlistDatauserUpdate(v);
-      });
+  const loadOneUser = async (id: string, email: string) => {
+    const body = {
+      id: id,
+      email: email,
+    };
+    const res = await fetch("/api/get-one-user", {
+      method: "POST",
+      body: JSON.stringify(body),
+    });
+    const data = await res.json();
+    console.log(body);
+    console.log(data.name);
+    setusername(data.name);
+    open();
   };
+
   return (
     <AppShell
       styles={{
@@ -129,10 +137,8 @@ export default function AppShellDemo() {
                   method: "POST",
                   body: JSON.stringify(body),
                 });
-
-                //console.log(body);
                 loadUser();
-                close()
+                close();
               }}
             >
               Daftar
@@ -162,7 +168,12 @@ export default function AppShellDemo() {
                     <td>{v.email}</td>
                     <td>{v.password}</td>
                     <td>
-                      <ActionIcon variant="outline">
+                      <ActionIcon
+                        variant="outline"
+                        onClick={async () => {
+                          loadOneUser(v.id, v.email);
+                        }}
+                      >
                         <IconSettings size="1rem" />
                       </ActionIcon>
                     </td>
